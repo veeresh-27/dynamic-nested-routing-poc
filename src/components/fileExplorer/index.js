@@ -1,76 +1,78 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyledFileView, StyledFolderView } from "./style";
+import { useNavigate } from "react-router-dom";
+import { useFolderLinks } from "../../hooks/useFolderLinks";
+import { FolderContext } from "../../context/folderContext";
 
-export const folderList = [
-  {
-    id: 19283,
-    name: "root",
-    link: "/",
-    folder: true,
-    children: [
-      {
-        id: 19284,
-        name: "Folder1",
-        link: `Folder1`,
-        folder: true,
-        children: [
-          {
-            id: 19285,
-            name: "file1",
-            folder: false,
-            link: `file1`,
-          },
-          {
-            id: 192857,
-            name: "Folder4",
-            folder: true,
-            link: "folder4",
-            children: [
-              {
-                id: 19288,
-                name: "File5",
-                folder: false,
-                link: `file5`,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: 19286,
-        name: "Folder2",
-        link: `Folder2`,
-        folder: true,
-        children: [],
-      },
-    ],
-  },
-];
+function FileExplorer({ folder, handleInsertNode, links }) {
+  const navigate = useNavigate();
 
-function FileExplorer({ id, name, link, folder, children }) {
   const [expand, setExpand] = useState(false);
-  console.log(children);
+  const [showInput, setShowInput] = useState({
+    visible: false,
+    isFolder: false,
+  });
+
+  const handleFileClick = () => {
+    links.forEach((ele) => {
+      if (ele.id == folder.id) {
+        navigate(ele.link);
+      }
+    });
+  };
+
+  const handleNewFolder = (e, isFolder) => {
+    e.stopPropagation();
+    setExpand(true);
+    setShowInput({
+      visible: true,
+      isFolder,
+    });
+  };
+
+  const onAddFolder = (e) => {
+    e.stopPropagation();
+    if (e.keyCode === 13 && e.target.value) {
+      console.log(folder.id, "Id");
+      console.log(e.target.value, "NAme");
+      handleInsertNode(folder.id, e.target.value, showInput.isFolder);
+      setShowInput({ ...showInput, visible: false });
+    }
+  };
+
   return (
     <div>
-      {folder === true ? (
+      {folder.folder === true ? (
         <div style={{ paddingLeft: "8px" }}>
-          <StyledFolderView width="120px" onClick={() => setExpand(!expand)}>
-            {name}
-            {expand !== true ? <>👉</> : <>👇</>}
+          <StyledFolderView width="200px" onClick={() => setExpand(!expand)}>
+            {expand !== true ? <>📁</> : <>📂</>}
+            {folder.name}
+            <div>
+              <button onClick={(e) => handleNewFolder(e, true)}>
+                Folder +
+              </button>
+              <button onClick={(e) => handleNewFolder(e, false)}>File +</button>
+            </div>
           </StyledFolderView>{" "}
-          {expand === true &&
-            children.map((child) => (
-              <FileExplorer
-                id={child.id}
-                name={child.name}
-                link={child.link}
-                folder={child.folder}
-                children={child.children}
+          {showInput.visible && (
+            <div className="inputContainer">
+              <span>{showInput.isFolder ? "📁" : "📄"}</span>
+              <input
+                type="text"
+                className="inputContainer__input"
+                autoFocus
+                onKeyDown={onAddFolder}
+                onBlur={() => setShowInput({ ...showInput, visible: false })}
               />
-            ))}
+            </div>
+          )}
+          {expand === true &&
+            folder.children.map((child) => <FileExplorer folder={child} handleInsertNode={handleInsertNode} links={links} />)}
         </div>
       ) : (
-        <StyledFileView width="120px">{name}</StyledFileView>
+        <StyledFileView onClick={handleFileClick} width="120px">
+          📄 {folder.name}
+        </StyledFileView>
       )}
     </div>
   );

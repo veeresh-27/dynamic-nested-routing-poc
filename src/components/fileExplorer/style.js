@@ -8,9 +8,12 @@ export const StyledFolderView = styled.div`
   border-radius: 6px;
   margin-bottom: 8px;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const StyledFileView = styled.div`
+  text-decoration: none;
+  color: inherit;
   display: flex;
   width: ${({ width }) => width};
   background-color: lightgray;
@@ -18,4 +21,5 @@ export const StyledFileView = styled.div`
   border-radius: 6px;
   margin-bottom: 8px;
   align-items: center;
+  cursor: pointer;
 `;

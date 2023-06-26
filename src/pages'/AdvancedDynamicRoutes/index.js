@@ -1,13 +1,28 @@
-import React from "react";
-import FileExplorer, { folderList } from "../../components/fileExplorer";
+import React, { useEffect, useState } from "react";
+import FileExplorer from "../../components/fileExplorer";
+import { folderList } from "../../data/folders";
+import { FolderContext } from "../../context/folderContext";
+import { useAlterFolder } from "../../hooks/useAlterFolder";
+import { useFolderLinks } from "../../hooks/useFolderLinks";
 
 function AdvancedDynamicRoutes() {
-  // console.log(folderList);
+  const [allFolders, setAllFolders] = useState(folderList);
+  const { insertNode } = useAlterFolder();
+
+  const handleInsertNode = (folderId, item, isFolder) => {
+    const finalTree = insertNode(allFolders, folderId, item, isFolder);
+    setAllFolders(finalTree, "finalTree");
+  };
+
+  const links = useFolderLinks(folderList, "");
+
   return (
     <div>
-      {folderList.map(({ id, name, link, folder, children }) => (
-        <FileExplorer  id={id} name={name} link={link} folder={folder} children={children} />
-      ))}
+      <FileExplorer
+        folder={allFolders}
+        handleInsertNode={handleInsertNode}
+        links={links}
+      />
     </div>
   );
 }

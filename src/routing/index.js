@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Home from "../pages'/home";
 import DynamicRoutes from "../pages'/dynamicRoutes";
 import Product from "../components/product";
-import { folderList } from "../components/fileExplorer";
-import { createDynamicRoute } from "./dynamicRouteGenerator";
 import AdvancedDynamicRoutes from "../pages'/AdvancedDynamicRoutes";
+import { useFolderLinks } from "../hooks/useFolderLinks";
+import { folderList } from "../data/folders";
+
+
 
 function Routing() {
+
+  const folderLinks = useFolderLinks(folderList, "");
   return (
     <div>
       <Routes>
@@ -18,15 +22,10 @@ function Routing() {
         </Route>
         <Route path={"advanced-dynamic-routes"}>
           <Route index element={<AdvancedDynamicRoutes />} />
-          {/* {folderList.map((folder) =>
-            createDynamicRoute(
-              folder.link,
-              folder.children,
-              folder.id,
-              folder.name,
-              folder.folder
-            )
-          )} */}
+          <Route path="any" element={<>ANy</>} />
+          {folderLinks.map((folder, index) => {
+            return <Route key={folder.id} path={folderLinks[index].link} element={<>Hello</>} />;
+          })}
         </Route>
       </Routes>
     </div>
