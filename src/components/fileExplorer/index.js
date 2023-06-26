@@ -1,14 +1,13 @@
 import React, { useContext, useState } from "react";
 import { StyledFileView, StyledFolderView } from "./style";
 import { useNavigate } from "react-router-dom";
-import { useFolderLinks } from "../../hooks/useFolderLinks";
-import { FolderContext } from "../../context/folderContext";
 
 function FileExplorer({ folder, handleInsertNode, links }) {
   const navigate = useNavigate();
 
   const [expand, setExpand] = useState(false);
   const [showInput, setShowInput] = useState({
+    
     visible: false,
     isFolder: false,
   });
@@ -33,8 +32,8 @@ function FileExplorer({ folder, handleInsertNode, links }) {
   const onAddFolder = (e) => {
     e.stopPropagation();
     if (e.keyCode === 13 && e.target.value) {
-      console.log(folder.id, "Id");
-      console.log(e.target.value, "NAme");
+      // console.log(folder.id, "Id");
+      // console.log(e.target.value, "NAme");
       handleInsertNode(folder.id, e.target.value, showInput.isFolder);
       setShowInput({ ...showInput, visible: false });
     }
@@ -67,7 +66,13 @@ function FileExplorer({ folder, handleInsertNode, links }) {
             </div>
           )}
           {expand === true &&
-            folder.children.map((child) => <FileExplorer folder={child} handleInsertNode={handleInsertNode} links={links} />)}
+            folder.children.map((child) => (
+              <FileExplorer
+                folder={child}
+                handleInsertNode={handleInsertNode}
+                links={links}
+              />
+            ))}
         </div>
       ) : (
         <StyledFileView onClick={handleFileClick} width="120px">

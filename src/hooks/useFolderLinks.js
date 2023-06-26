@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { folderList, routeArray } from "../components/fileExplorer";
 
 export const useFolderLinks = (folderList, link) => {
   const [folderLinks, setFolderLinks] = useState([]);
 
   const routeArray = (folders, link) => {
+   
     if (folders.folder != true) {
       let tempLink = { link: link + "/" + folders.name, id: folders.id };
 
@@ -29,7 +29,7 @@ export const useFolderLinks = (folderList, link) => {
   useEffect(() => {
     setFolderLinks([]);
     routeArray(folderList, link);
-  }, []);
+  }, [folderList]);
 
   return folderLinks;
 };

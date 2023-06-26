@@ -1,14 +1,14 @@
 export const useAlterFolder = () => {
   const insertNode = function (tree, folderId, item, isFolder) {
-    if (tree.id === folderId && tree.isFolder) {
+    if (tree.id === folderId && tree.folder) {
       tree.children.unshift({
-        id: new Date().getTime(),
+        id: new Date(),
         name: item,
         folder: isFolder,
         link: item,
         children: [],
       });
-      console.log(tree, "tree");
+      // console.log(tree, "tree");
       return tree;
     }
 

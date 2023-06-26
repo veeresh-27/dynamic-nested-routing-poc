@@ -1,32 +1,33 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { StyledSideNavbar, StyledSideNavbarEle } from "./style";
 import { Link } from "react-router-dom";
+import { FolderContext } from "../../context/folderContext";
+import { useAlterFolder } from "../../hooks/useAlterFolder";
+import FileExplorer from "../fileExplorer";
+import { useFolderLinks } from "../../hooks/useFolderLinks";
 
 function SideNavbar() {
-  const links = [
-    {
-      id: 1,
-      name: "Home",
-      link: "/",
-    },
-    {
-      id: 2,
-      name: "Dynamic-routes",
-      link: "/dynamic-routes",
-    },
-    {
-      id: 3,
-      name: "Advanced-dynamic-routes",
-      link: "/advanced-dynamic-routes",
-    },
-  ];
+  const { allFolders, setAllFolders } = useContext(FolderContext);
+
+  const { insertNode } = useAlterFolder();
+
+  const links = useFolderLinks(allFolders, "");
+  // console.log(links);
+
+  const handleInsertNode = (folderId, item, isFolder) => {
+    const finalTree = insertNode(allFolders, folderId, item, isFolder);
+    setAllFolders(finalTree, "finalTree");
+  };
+  useEffect(()=>{
+    // console.log('refreshed')
+  }, [])
   return (
     <StyledSideNavbar>
-      {links.map((item, i) => (
-        <StyledSideNavbarEle key={i}>
-          <Link to={item.link}>{item.name}</Link>
-        </StyledSideNavbarEle>
-      ))}
+      <FileExplorer
+        folder={allFolders}
+        handleInsertNode={handleInsertNode}
+        links={links}
+      />
     </StyledSideNavbar>
   );
 }
