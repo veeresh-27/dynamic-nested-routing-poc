@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledLayout = styled.section`
   display: grid;
-  grid-template-columns: auto 100%;
+  grid-template-columns: 20% auto;
 `;
 
 export const StyledLeftLayout = styled.div`

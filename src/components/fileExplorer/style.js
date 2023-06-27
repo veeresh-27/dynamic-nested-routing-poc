@@ -2,12 +2,14 @@ import styled from "styled-components";
 
 export const StyledFolderView = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: ${({ width }) => width};
-  background-color: grey;
+  background-color: lightgray;
   padding: 6px 6px 6px 12px;
   border-radius: 6px;
   margin-bottom: 8px;
   align-items: center;
+  justify-content: space-between;
   cursor: pointer;
 `;
 
@@ -16,8 +18,9 @@ export const StyledFileView = styled.div`
   color: inherit;
   display: flex;
   width: ${({ width }) => width};
-  background-color: lightgray;
+  /* background-color: lightgray; */
   padding: 6px 6px 6px 12px;
+  border: solid 2px lightgray;
   border-radius: 6px;
   margin-bottom: 8px;
   align-items: center;

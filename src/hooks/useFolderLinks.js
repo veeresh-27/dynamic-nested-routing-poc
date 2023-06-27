@@ -4,7 +4,6 @@ export const useFolderLinks = (folderList, link) => {
   const [folderLinks, setFolderLinks] = useState([]);
 
   const routeArray = (folders, link) => {
-   
     if (folders.folder != true) {
       let tempLink = { link: link + "/" + folders.name, id: folders.id };
 
